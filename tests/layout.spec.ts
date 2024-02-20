@@ -2,26 +2,21 @@
 import { expect, test } from '@playwright/test';
 import { chromium } from 'playwright';
 import {pwafPage} from "../helpers/layoutPage";
+const { BuildUser } = require("./user_builder");
 
-test('Inline form', async () => {
-    const browser = await chromium.launch();
-    const page = await browser.newPage();
-    await page.goto('http://localhost:4200/pages/forms/layouts');
+test('Inline form', async ({page}) => {
+    const blockForm = new pwafPage(page)
+    const url = 'http://localhost:4200/pages/forms/layouts';
+    const user = new BuildUser().addFirstName().addEmail().addPassword().addLastName().addPhoneNumber().generate();
+    await blockForm.navigateToLayoutPage(url)
     //Fill inline name field
-    await page.getByPlaceholder( 'Jane Doe').fill("Test Testovich");
-    await page.getByPlaceholder('Jane Doe').innerText();
-    await expect(page.getByPlaceholder('Jane Doe')).toHaveValue("Test Testovich");
+    await blockForm.fillInlineName(user);
     //Fill inline email field
-    await page.locator('.form-inline').getByPlaceholder('Email').fill('asdsa@gmail.com');
-    await page.locator('.form-inline').getByPlaceholder('Email').innerText();
-    await expect(page.locator('.form-inline').getByPlaceholder('Email')).toHaveValue("asdsa@gmail.com");
+    await blockForm.fillInlineEmail(user);
     //Check inline checkbox
-    await page.click('.status-basic:nth-child(3) .custom-checkbox');
-    const checkboxChecked = await page.isChecked('.status-basic:nth-child(3) .custom-checkbox');
-    expect(checkboxChecked).toBeTruthy();
-    await page.click('.status-primary:nth-child(4)');
-    const currentUrl = page.url();
-    expect(currentUrl).toBe('http://localhost:4200/pages/forms/layouts');
+    await blockForm.fillInlineCheckbox();
+    //Click on Submit button
+    await blockForm.submitButtonInline()
 });
 
 test ('Using the Grid', async () => {
@@ -59,8 +54,9 @@ test ('Basic form', async () => {
     await page.locator('#exampleInputPassword1').innerText();
     await expect(page.locator('#exampleInputPassword1')).toHaveValue('Qwe12345');
     // Check basic checkbox
-    // const basicButton = await page.getByRole('checkbox', {custom-checkbox});
-    // await page.click('.status-danger');
+    await page.click('.form-group > .status-basic .custom-checkbox');
+    const checkboxCheckMeOut = page.isChecked('.status-basic:nth-child(3) .custom-checkbox');
+    expect(checkboxCheckMeOut).toBeTruthy();
     const currentUrl = page.url();
     expect(currentUrl).toBe('http://localhost:4200/pages/forms/layouts');
 });

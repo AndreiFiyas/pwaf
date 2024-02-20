@@ -1,5 +1,8 @@
+import {chromium} from "playwright";
+
 const { expect } = require('@playwright/test');
-const BuildUser = require("./user_builder");
+const { BuildUser } = require("./user_builder");
+
 
 export class pwafPage {
     inlineFormName: any;
@@ -30,10 +33,10 @@ export class pwafPage {
     page: any;
 
     constructor(page) {
-        this.inlineFormName = page.$('[placeholder="Jane Doe"]');
-        this.inlineFormEmail = page.$('.form-inline > [placeholder="Email"]');
-        this.inlineFormCheckbox = page.$('.status-basic:nth-child(3) .custom-checkbox');
-        this.inlineFormSubmit = page.$('.status-primary:nth-child(4)');
+        this.inlineFormName = page.getByPlaceholder('Jane Doe');
+        this.inlineFormEmail = page.locator('.form-inline').getByPlaceholder('Email');
+        this.inlineFormCheckbox = page.locator('.status-basic:nth-child(3) .custom-checkbox');
+        this.inlineFormSubmit = page.locator('.status-primary:nth-child(4)');
         this.gridEmail = page.$('#inputEmail1');
         this.gridPassword = page.$('#inputPassword2');
         this.gridRadio = page.$('.status-basic:nth-child(2) .inner-circle');
@@ -57,35 +60,33 @@ export class pwafPage {
         this.horizontalFormSignIn = page.$('.status-warning');
     }
 
-    async fillInlineName(user, inlineFormName) {
-        await this.page.waitForSelector(inlineFormName);
-        await this.page.click(inlineFormName);
-        await this.page.fill(inlineFormName, user.firstname);
+    async fillInlineName(user) {
+        await this.page.getByPlaceholder('Jane Doe').fill(user.firstname + '' + user.lastName)
+        await this.page.getByPlaceholder('Jane Doe').innerText();
+        await expect(this.page.getByPlaceholder('Jane Doe')).toHaveValue(user.firstname + '' + user.lastName);
     };
 
-    async fillInlineEmail(user, inlineFormEmail) {
-        await this.page.waitForSelector(inlineFormEmail);
-        await this.page.click(inlineFormEmail);
-        await this.page.fill(inlineFormEmail, user.mail);
+    async fillInlineEmail(user) {
+        await this.page.locator('.form-inline').getByPlaceholder('Email').fill(user.mail);
+        await this.page.locator('.form-inline').getByPlaceholder('Email').innerText();
+        await expect(this.page.locator('.form-inline').getByPlaceholder('Email')).toHaveValue(user.mail);
     };
 
-    async fillInlineCheckbox(user, inlineFormCheckbox) {
-        await this.page.click(inlineFormCheckbox)
+    async fillInlineCheckbox() {
+        await this.page.click('.status-basic:nth-child(3) .custom-checkbox');
+        const checkboxChecked = await this.page.isChecked('.status-basic:nth-child(3) .custom-checkbox');
+        expect(checkboxChecked).toBeTruthy();
     };
 
+    async submitButtonInline() {
+        await this.page.click('.status-primary:nth-child(4)');
+        const currentUrl = this.page.url();
+        expect(currentUrl).toBe('http://localhost:4200/pages/forms/layouts');
+    };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    async navigateToLayoutPage(url) {
+        const browser = await chromium.launch();
+        const page = await browser.newPage();
+        await page.goto('http://localhost:4200/pages/forms/layouts');
+    }
 }
-// переписать локаторы, посмотреть составные, get by role
