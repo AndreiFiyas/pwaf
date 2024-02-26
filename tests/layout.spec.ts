@@ -1,134 +1,84 @@
 // @ts-check
 import { expect, test } from '@playwright/test';
-import { chromium } from 'playwright';
 import {pwafPage} from '../helpers/layoutPage';
 import BuildUser from '../helpers/user_builder';
 
-test('Inline form', async () => {
-    const url = 'http://localhost:4200/pages/forms/layouts';
-    // const user = new BuildUser().addFirstName().addEmail().addPassword().addLastName().addPhoneNumber().generate();
-    // await blockForm.navigateToLayoutPage(url);
-    const browser = await chromium.launch();
-    const page = await browser.newPage();
+test('Inline form', async ({page}) => {
     const blockForm = new pwafPage(page)
     await page.goto('http://localhost:4200/pages/forms/layouts');
     //Fill inline name field
-    await blockForm.fillInlineName();
+    await blockForm.fillInlineName(page);
     //Fill inline email field
-    await blockForm.fillInlineEmail();
+    await blockForm.fillInlineEmail(page);
     //Check inline checkbox
-    await blockForm.fillInlineCheckbox();
+    await blockForm.fillInlineCheckbox(page);
     //Click on Submit button
-    await blockForm.submitButtonInline()
+    await blockForm.submitButtonInline(page)
 });
 
-test ('Using the Grid', async () => {
-    const browser = await chromium.launch();
-    const page = await browser.newPage();
+test ('Using the Grid', async ({page}) => {
+    const blockForm = new pwafPage(page)
     await page.goto('http://localhost:4200/pages/forms/layouts');
     // Fill grid email
-    await page.locator('#inputEmail1').fill('test@gmail.com');
-    await page.locator('#inputEmail1').innerText();
-    await expect(page.locator('#inputEmail1')).toHaveValue('test@gmail.com');
+    await blockForm.fillGridEmail(page);
     // Fill grid password
-    await page.locator('#inputPassword2').fill('Qwe12345');
-    await page.locator('#inputPassword2').innerText();
-    await expect(page.locator('#inputPassword2')).toHaveValue('Qwe12345');
+    await blockForm.fillGridPassword(page);
     // Set radiobutton
-    const radioButton = page.locator('nb-radio-group :text-is("Option 1")');
-    await radioButton.click();
-    await expect(radioButton.isChecked()).resolves.toBe(true);
+    await blockForm.fillGridRadiobutton(page);
     // Click on Sign in
-    await page.click('button[ng-reflect-status="primary"]');
-    const currentUrl = page.url();
-    expect(currentUrl).toBe('http://localhost:4200/pages/forms/layouts');
+    await blockForm.fillGribButton(page)
 });
 
-test ('Basic form', async () => {
-    const browser = await chromium.launch();
-    const page = await browser.newPage();
+test ('Basic form', async ({page}) => {
+    const blockForm = new pwafPage(page)
     await page.goto('http://localhost:4200/pages/forms/layouts');
     // Fill basic email
-    await page.locator('#exampleInputEmail1').fill('test@gmail.com');
-    await page.locator('#exampleInputEmail1').innerText();
-    await expect(page.locator('#exampleInputEmail1')).toHaveValue('test@gmail.com');
+    await blockForm.fillBasicEmail(page);
     // Fill basic password
-    await page.locator('#exampleInputPassword1').fill('Qwe12345');
-    await page.locator('#exampleInputPassword1').innerText();
-    await expect(page.locator('#exampleInputPassword1')).toHaveValue('Qwe12345');
+    await blockForm.fillBasicPassword(page);
     // Check basic checkbox
-    await page.click('.form-group > .status-basic .custom-checkbox');
-    const checkboxCheckMeOut = page.isChecked('.status-basic:nth-child(3) .custom-checkbox');
-    expect(checkboxCheckMeOut).toBeTruthy();
-    const currentUrl = page.url();
-    expect(currentUrl).toBe('http://localhost:4200/pages/forms/layouts');
+    await blockForm.fillBasicCheckbox(page)
 });
 
-test ('Form without labels', async () => {
-    const browser = await chromium.launch();
-    const page = await browser.newPage();
+test ('Form without labels', async ({page}) => {
+    const blockForm = new pwafPage(page)
     await page.goto('http://localhost:4200/pages/forms/layouts');
     // Fill recepient field
-    await page.getByPlaceholder('Recipients').fill('Test Testovich');
-    await page.getByPlaceholder('Recipients').innerText();
-    await expect(page.getByPlaceholder('Recipients')).toHaveValue('Test Testovich');
+    await blockForm.fillRecepientField(page);
     // Fill subject field
-    await page.getByPlaceholder('Subject').fill('Human');
-    await page.getByPlaceholder('Subject').innerText();
-    await expect(page.getByPlaceholder('Subject')).toHaveValue('Human');
+    await blockForm.fillSubjectField(page);
     // Fill message field
-    await page.getByPlaceholder('Message').fill('Hello World!');
-    await page.getByPlaceholder('Message').innerText();
-    await expect(page.getByPlaceholder('Message')).toHaveValue('Hello World!');
+    await blockForm.fillMessageField(page);
     // Push send button
-    await page.click('.status-success');
-    const currentUrl = page.url();
-    expect(currentUrl).toBe('http://localhost:4200/pages/forms/layouts');
+    await blockForm.fillSendPush(page)
 });
 
 test ('Block form', async ({page} ) => {
     const blockForm = new pwafPage(page)
     await page.goto('http://localhost:4200/pages/forms/layouts');
     // Fill first name
-    await page.locator('#inputFirstName').fill('Test');
-    await page.locator('#inputFirstName').innerText();
-    await expect(page.locator('#inputFirstName')).toHaveValue('Test');
+    await blockForm.fillBlockName(page);
     // Fill last name
-    await page.locator('#inputLastName').fill('Testovich');
-    await page.locator('#inputLastName').innerText();
-    await expect(page.locator('#inputLastName')).toHaveValue('Testovich');
+    await blockForm.fillBlockLastName(page);
     // Fill email
-    await page.locator('#inputEmail').fill('test@gmail.com');
-    await page.locator('#inputEmail').innerText();
-    await expect(page.locator('#inputEmail')).toHaveValue('test@gmail.com');
+    await blockForm.fillBlockEmail(page);
     // Fill website
-    await page.locator('#inputWebsite').fill('https://example.com');
-    await page.locator('#inputWebsite').innerText();
-    await expect(page.locator('#inputWebsite')).toHaveValue('https://example.com');
+    await blockForm.fillBlockWebsite(page);
     // Press submit button
-    await page.click('.appearance-filled:nth-child(3)');
-    const currentUrl = page.url();
-    expect(currentUrl).toBe('http://localhost:4200/pages/forms/layouts');
+    await blockForm.fillBlockSubmit(page)
 });
 
-test('Horizontal form', async () => {
-    const browser = await chromium.launch();
-    const page = await browser.newPage();
+test('Horizontal form', async ({page}) => {
+    const blockForm = new pwafPage(page)
     await page.goto('http://localhost:4200/pages/forms/layouts');
     // Fill email field
-    await page.locator('#inputEmail3').fill('test@gmail.com');
-    await page.locator('#inputEmail3').innerText();
-    await expect(page.locator('#inputEmail3')).toHaveValue('test@gmail.com');
+    await blockForm.fillHorizontalEmail(page);
     //Fill password field
-    await page.locator('#inputPassword3').fill('Qwe12345');
-    await page.locator('#inputPassword3').innerText();
-    await expect(page.locator('#inputPassword3')).toHaveValue('Qwe12345');
+    await blockForm.fillHorizontalPassword(page);
     //Press on checkbox
-    await page.click('.checkbox .custom-checkbox');
+    await blockForm.fillHorizontalCheckbox(page);
     //Click on sign in button
-    await page.click('.status-warning');
-    const currentUrl = page.url();
-    expect(currentUrl).toBe('http://localhost:4200/pages/forms/layouts');
+    await blockForm.fillHorizontalSign(page)
 });
 
 ///await page.locator(‘input-filter’).getByPlaceholder(‘Age’).fill(age);

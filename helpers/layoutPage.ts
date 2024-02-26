@@ -59,32 +59,154 @@ export class pwafPage {
         this.horizontalFormCheckbox = page.$('.checkbox .custom-checkbox');
         this.horizontalFormSignIn = page.$('.status-warning');
     }
-
-    async fillInlineName() {
-        await this.page.getByPlaceholder('Jane Doe').fill('Andrew' + '' + 'Fiyas')
-        await this.page.getByPlaceholder('Jane Doe').innerText();
-        await expect(this.page.getByPlaceholder('Jane Doe')).toHaveValue('Andrew' + '' + 'Fiyas');
+//Inline form
+    async fillInlineName(page) {
+        await page.getByPlaceholder('Jane Doe').fill('Andrew' + '' + 'Fiyas')
+        await page.getByPlaceholder('Jane Doe').innerText();
+        await expect(page.getByPlaceholder('Jane Doe')).toHaveValue('Andrew' + '' + 'Fiyas');
     };
 
-    async fillInlineEmail() {
-        await this.page.locator('.form-inline').getByPlaceholder('Email').fill('test@gmail.com');
-        await this.page.locator('.form-inline').getByPlaceholder('Email').innerText();
-        await expect(this.page.locator('.form-inline').getByPlaceholder('Email')).toHaveValue('test@gmail.com');
+    async fillInlineEmail(page) {
+        await page.locator('.form-inline').getByPlaceholder('Email').fill('test@gmail.com');
+        await page.locator('.form-inline').getByPlaceholder('Email').innerText();
+        await expect(page.locator('.form-inline').getByPlaceholder('Email')).toHaveValue('test@gmail.com');
     };
 
-    async fillInlineCheckbox() {
-        await this.page.click('.status-basic:nth-child(3) .custom-checkbox');
-        const checkboxChecked = await this.page.isChecked('.status-basic:nth-child(3) .custom-checkbox');
+    async fillInlineCheckbox(page) {
+        await page.click('.status-basic:nth-child(3) .custom-checkbox');
+        const checkboxChecked = await page.isChecked('.status-basic:nth-child(3) .custom-checkbox');
         expect(checkboxChecked).toBeTruthy();
     };
 
-    async submitButtonInline() {
-        await this.page.click('.status-primary:nth-child(4)');
-        const currentUrl = this.page.url();
+    async submitButtonInline(page) {
+        await page.click('.status-primary:nth-child(4)');
+        const currentUrl = page.url();
         expect(currentUrl).toBe('http://localhost:4200/pages/forms/layouts');
     };
 
-    async navigateToLayoutPage(url) {
-        await this.page.goto(url);
+//Grid form
+    async fillGridEmail(page) {
+        await page.locator('#inputEmail1').fill('test@gmail.com');
+        await page.locator('#inputEmail1').innerText();
+        await expect(page.locator('#inputEmail1')).toHaveValue('test@gmail.com');
+    };
+
+    async fillGridPassword(page) {
+        await page.locator('#inputPassword2').fill('Qwe12345');
+        await page.locator('#inputPassword2').innerText();
+        await expect(page.locator('#inputPassword2')).toHaveValue('Qwe12345');
+    };
+
+    async fillGridRadiobutton(page) {
+        const radioButton = page.locator('nb-radio-group :text-is("Option 1")');
+        await radioButton.click();
+        await expect(radioButton.isChecked()).resolves.toBe(true);
+    };
+
+    async fillGribButton(page) {
+        await page.click('button[ng-reflect-status="primary"]');
+        const currentUrl = page.url();
+        expect(currentUrl).toBe('http://localhost:4200/pages/forms/layouts');
     }
+
+//Basic form
+    async fillBasicEmail(page) {
+        await page.locator('#exampleInputEmail1').fill('test@gmail.com');
+        await page.locator('#exampleInputEmail1').innerText();
+        await expect(page.locator('#exampleInputEmail1')).toHaveValue('test@gmail.com');
+    };
+
+    async fillBasicPassword(page) {
+        await page.locator('#exampleInputPassword1').fill('Qwe12345');
+        await page.locator('#exampleInputPassword1').innerText();
+        await expect(page.locator('#exampleInputPassword1')).toHaveValue('Qwe12345');
+    };
+
+    async fillBasicCheckbox(page) {
+        await page.click('.form-group > .status-basic .custom-checkbox');
+        const checkboxCheckMeOut = page.isChecked('.status-basic:nth-child(3) .custom-checkbox');
+        expect(checkboxCheckMeOut).toBeTruthy();
+        const currentUrl = page.url();
+        expect(currentUrl).toBe('http://localhost:4200/pages/forms/layouts');
+    };
+
+//Label form
+    async fillRecepientField(page) {
+        await page.getByPlaceholder('Recipients').fill('Test Testovich');
+        await page.getByPlaceholder('Recipients').innerText();
+        await expect(page.getByPlaceholder('Recipients')).toHaveValue('Test Testovich');
+    };
+
+    async fillSubjectField(page) {
+        await page.getByPlaceholder('Subject').fill('Human');
+        await page.getByPlaceholder('Subject').innerText();
+        await expect(page.getByPlaceholder('Subject')).toHaveValue('Human');
+    };
+
+    async fillMessageField(page) {
+        await page.getByPlaceholder('Message').fill('Hello World!');
+        await page.getByPlaceholder('Message').innerText();
+        await expect(page.getByPlaceholder('Message')).toHaveValue('Hello World!');
+    };
+
+    async fillSendPush(page) {
+        await page.click('.status-success');
+        const currentUrl = page.url();
+        expect(currentUrl).toBe('http://localhost:4200/pages/forms/layouts');
+    };
+
+//Block form
+    async fillBlockName(page) {
+        await page.locator('#inputFirstName').fill('Test');
+        await page.locator('#inputFirstName').innerText();
+        await expect(page.locator('#inputFirstName')).toHaveValue('Test');
+    };
+
+    async fillBlockLastName(page) {
+        await page.locator('#inputLastName').fill('Testovich');
+        await page.locator('#inputLastName').innerText();
+        await expect(page.locator('#inputLastName')).toHaveValue('Testovich');
+    };
+
+    async fillBlockEmail(page) {
+        await page.locator('#inputEmail').fill('test@gmail.com');
+        await page.locator('#inputEmail').innerText();
+        await expect(page.locator('#inputEmail')).toHaveValue('test@gmail.com');
+    };
+
+    async fillBlockWebsite(page) {
+        await page.locator('#inputWebsite').fill('https://example.com');
+        await page.locator('#inputWebsite').innerText();
+        await expect(page.locator('#inputWebsite')).toHaveValue('https://example.com');
+    };
+
+    async fillBlockSubmit(page) {
+        await page.click('.appearance-filled:nth-child(3)');
+        const currentUrl = page.url();
+        expect(currentUrl).toBe('http://localhost:4200/pages/forms/layouts');
+    };
+
+//Horizontal form
+    async fillHorizontalEmail(page) {
+        await page.locator('#inputEmail3').fill('test@gmail.com');
+        await page.locator('#inputEmail3').innerText();
+        await expect(page.locator('#inputEmail3')).toHaveValue('test@gmail.com');
+    };
+    async fillHorizontalPassword(page) {
+        await page.locator('#inputPassword3').fill('Qwe12345');
+        await page.locator('#inputPassword3').innerText();
+        await expect(page.locator('#inputPassword3')).toHaveValue('Qwe12345');
+    };
+    async fillHorizontalCheckbox(page) {
+        await page.click('.checkbox .custom-checkbox');
+    };
+
+    async fillHorizontalSign(page) {
+        await page.click('.status-warning');
+        const currentUrl = page.url();
+        expect(currentUrl).toBe('http://localhost:4200/pages/forms/layouts');
+    };
+
+
+
 }
