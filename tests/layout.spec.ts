@@ -1,18 +1,21 @@
 // @ts-check
 import { expect, test } from '@playwright/test';
 import { chromium } from 'playwright';
-import {pwafPage} from "../helpers/layoutPage";
-const { BuildUser } = require("./user_builder");
+import {pwafPage} from '../helpers/layoutPage';
+import BuildUser from '../helpers/user_builder';
 
-test('Inline form', async ({page}) => {
-    const blockForm = new pwafPage(page)
+test('Inline form', async () => {
     const url = 'http://localhost:4200/pages/forms/layouts';
-    const user = new BuildUser().addFirstName().addEmail().addPassword().addLastName().addPhoneNumber().generate();
-    await blockForm.navigateToLayoutPage(url)
+    // const user = new BuildUser().addFirstName().addEmail().addPassword().addLastName().addPhoneNumber().generate();
+    // await blockForm.navigateToLayoutPage(url);
+    const browser = await chromium.launch();
+    const page = await browser.newPage();
+    const blockForm = new pwafPage(page)
+    await page.goto('http://localhost:4200/pages/forms/layouts');
     //Fill inline name field
-    await blockForm.fillInlineName(user);
+    await blockForm.fillInlineName();
     //Fill inline email field
-    await blockForm.fillInlineEmail(user);
+    await blockForm.fillInlineEmail();
     //Check inline checkbox
     await blockForm.fillInlineCheckbox();
     //Click on Submit button

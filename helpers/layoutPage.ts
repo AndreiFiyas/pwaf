@@ -60,16 +60,16 @@ export class pwafPage {
         this.horizontalFormSignIn = page.$('.status-warning');
     }
 
-    async fillInlineName(user) {
-        await this.page.getByPlaceholder('Jane Doe').fill(user.firstname + '' + user.lastName)
+    async fillInlineName() {
+        await this.page.getByPlaceholder('Jane Doe').fill('Andrew' + '' + 'Fiyas')
         await this.page.getByPlaceholder('Jane Doe').innerText();
-        await expect(this.page.getByPlaceholder('Jane Doe')).toHaveValue(user.firstname + '' + user.lastName);
+        await expect(this.page.getByPlaceholder('Jane Doe')).toHaveValue('Andrew' + '' + 'Fiyas');
     };
 
-    async fillInlineEmail(user) {
-        await this.page.locator('.form-inline').getByPlaceholder('Email').fill(user.mail);
+    async fillInlineEmail() {
+        await this.page.locator('.form-inline').getByPlaceholder('Email').fill('test@gmail.com');
         await this.page.locator('.form-inline').getByPlaceholder('Email').innerText();
-        await expect(this.page.locator('.form-inline').getByPlaceholder('Email')).toHaveValue(user.mail);
+        await expect(this.page.locator('.form-inline').getByPlaceholder('Email')).toHaveValue('test@gmail.com');
     };
 
     async fillInlineCheckbox() {
@@ -85,8 +85,6 @@ export class pwafPage {
     };
 
     async navigateToLayoutPage(url) {
-        const browser = await chromium.launch();
-        const page = await browser.newPage();
-        await page.goto('http://localhost:4200/pages/forms/layouts');
+        await this.page.goto(url);
     }
 }
