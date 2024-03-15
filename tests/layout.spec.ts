@@ -37,7 +37,9 @@ test ('Basic form', async ({page}) => {
     // Fill basic password
     await blockForm.fillBasicPassword(page);
     // Check basic checkbox
-    await blockForm.fillBasicCheckbox(page)
+    await blockForm.fillBasicCheckbox(page);
+    // Check current page
+    await blockForm.checkCurrentForm(page);
 });
 
 test ('Form without labels', async ({page}) => {
@@ -80,9 +82,9 @@ test('Horizontal form', async ({page}) => {
     //Click on sign in button
     await blockForm.fillHorizontalSign(page)
 });
-
-///await page.locator(‘input-filter’).getByPlaceholder(‘Age’).fill(age);
-///await page.locator(‘input-editor’).getByPlaceholder(‘Age’)
+//
+// /await page.locator(‘input-filter’).getByPlaceholder(‘Age’).fill(age);
+// /await page.locator(‘input-editor’).getByPlaceholder(‘Age’)
 // await page.locator(‘nb-card nb-radio :text-is(“Option 1”)’).click();
 // await page.locator(‘nb-card’).locator(‘nb-radio’).locator(‘:text-is(“Option 2")’).click();
 // await page.locator(‘nb-card’).getByRole(‘button’, { name: ‘Sign in’ }).first().click();
