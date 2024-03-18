@@ -1,10 +1,8 @@
-import {chromium} from "playwright";
-
 const { expect } = require('@playwright/test');
-const { BuildUser } = require("./user_builder");
 
 
-export class pwafPage {
+
+export class PwafPage {
     inlineFormName: any;
     inlineFormEmail: any;
     inlineFormCheckbox: any;
@@ -60,19 +58,20 @@ export class pwafPage {
         this.horizontalFormSignIn = page.locator('.status-warning');
     };
 //Inline form
-    async fillInlineName(page) {
-        await this.inlineFormName.fill('Andrew' + '' + 'Fiyas')
+    async fillInlineName(page, user) {
+
+        await this.inlineFormName.fill(user.firstname + '' + user.lastname)
         await this.inlineFormName.innerText();
-        await expect (this.inlineFormName).toHaveValue('Andrew' + '' + 'Fiyas');
+        await expect (this.inlineFormName).toHaveValue(user.firstname + '' + user.lastname);
     };
 
-    async fillInlineEmail(page) {
-        await this.inlineFormEmail.fill('test@gmail.com');
+    async fillInlineEmail(user) {
+        await this.inlineFormEmail.fill(user.mail);
         await this.inlineFormEmail.innerText();
-        await expect(await this.inlineFormEmail).toHaveValue('test@gmail.com');
+        await expect(await this.inlineFormEmail).toHaveValue(user.mail);
     };
 
-    async fillInlineCheckbox(page) {
+    async fillInlineCheckbox() {
         await this.inlineFormCheckbox.click();
         await this.inlineFormCheckbox.isChecked();
         expect(this.inlineFormCheckbox).toBeTruthy();
@@ -85,19 +84,19 @@ export class pwafPage {
     };
 
 //Grid form
-    async fillGridEmail(page) {
-        await this.gridEmail.fill('test@gmail.com');
+    async fillGridEmail(user) {
+        await this.gridEmail.fill(user.mail);
         await this.gridEmail.innerText();
-        await expect(this.gridEmail).toHaveValue('test@gmail.com');
+        await expect(this.gridEmail).toHaveValue(user.mail);
     };
 
-    async fillGridPassword(page) {
-        await this.gridPassword.fill('Qwe12345');
+    async fillGridPassword(user) {
+        await this.gridPassword.fill(user.password);
         await this.gridPassword.innerText();
-        await expect(this.gridPassword).toHaveValue('Qwe12345');
+        await expect(this.gridPassword).toHaveValue(user.password);
     };
 
-    async fillGridRadiobutton(page) {
+    async fillGridRadiobutton() {
         await this.gridRadio.click();
         await expect(this.gridRadio.isChecked()).resolves.toBe(true);
     };
@@ -109,16 +108,16 @@ export class pwafPage {
     }
 
 //Basic form
-    async fillBasicEmail(page) {
-        await this.basicFormEmail.fill('test@gmail.com');
+    async fillBasicEmail(user) {
+        await this.basicFormEmail.fill(user.mail);
         await this.basicFormEmail.innerText();
-        await expect(this.basicFormEmail).toHaveValue('test@gmail.com');
+        await expect(this.basicFormEmail).toHaveValue(user.mail);
     };
 
-    async fillBasicPassword(page) {
-        await this.basicFormPassword.fill('Qwe12345');
+    async fillBasicPassword(user) {
+        await this.basicFormPassword.fill(user.password);
         await this.basicFormPassword.innerText();
-        await expect(this.basicFormPassword).toHaveValue('Qwe12345');
+        await expect(this.basicFormPassword).toHaveValue(user.password);
     };
 
     async fillBasicCheckbox(page) {
@@ -132,22 +131,22 @@ export class pwafPage {
     };
 
 //Label form
-    async fillRecepientField(page) {
-        await page.getByPlaceholder('Recipients').fill('Test Testovich');
+    async fillRecepientField(page, user) {
+        await page.getByPlaceholder('Recipients').fill(user.firstname);
         await page.getByPlaceholder('Recipients').innerText();
-        await expect(page.getByPlaceholder('Recipients')).toHaveValue('Test Testovich');
+        await expect(page.getByPlaceholder('Recipients')).toHaveValue(user.firstname);
     };
 
-    async fillSubjectField(page) {
-        await page.getByPlaceholder('Subject').fill('Human');
+    async fillSubjectField(page, user) {
+        await page.getByPlaceholder('Subject').fill(user.lastname);
         await page.getByPlaceholder('Subject').innerText();
-        await expect(page.getByPlaceholder('Subject')).toHaveValue('Human');
+        await expect(page.getByPlaceholder('Subject')).toHaveValue(user.lastname);
     };
 
-    async fillMessageField(page) {
-        await page.getByPlaceholder('Message').fill('Hello World!');
+    async fillMessageField(page, user) {
+        await page.getByPlaceholder('Message').fill(user.text);
         await page.getByPlaceholder('Message').innerText();
-        await expect(page.getByPlaceholder('Message')).toHaveValue('Hello World!');
+        await expect(page.getByPlaceholder('Message')).toHaveValue(user.text);
     };
 
     async fillSendPush(page) {
@@ -157,28 +156,28 @@ export class pwafPage {
     };
 
 //Block form
-    async fillBlockName(page) {
-        await page.locator('#inputFirstName').fill('Test');
+    async fillBlockName(page, user) {
+        await page.locator('#inputFirstName').fill(user.firstname);
         await page.locator('#inputFirstName').innerText();
-        await expect(page.locator('#inputFirstName')).toHaveValue('Test');
+        await expect(page.locator('#inputFirstName')).toHaveValue(user.firstname);
     };
 
-    async fillBlockLastName(page) {
-        await page.locator('#inputLastName').fill('Testovich');
+    async fillBlockLastName(page, user) {
+        await page.locator('#inputLastName').fill(user.lastname);
         await page.locator('#inputLastName').innerText();
-        await expect(page.locator('#inputLastName')).toHaveValue('Testovich');
+        await expect(page.locator('#inputLastName')).toHaveValue(user.lastname);
     };
 
-    async fillBlockEmail(page) {
-        await page.locator('#inputEmail').fill('test@gmail.com');
+    async fillBlockEmail(page, user) {
+        await page.locator('#inputEmail').fill(user.mail);
         await page.locator('#inputEmail').innerText();
-        await expect(page.locator('#inputEmail')).toHaveValue('test@gmail.com');
+        await expect(page.locator('#inputEmail')).toHaveValue(user.mail);
     };
 
-    async fillBlockWebsite(page) {
-        await page.locator('#inputWebsite').fill('https://example.com');
+    async fillBlockWebsite(page, user) {
+        await page.locator('#inputWebsite').fill(user.lastname);
         await page.locator('#inputWebsite').innerText();
-        await expect(page.locator('#inputWebsite')).toHaveValue('https://example.com');
+        await expect(page.locator('#inputWebsite')).toHaveValue(user.lastname);
     };
 
     async fillBlockSubmit(page) {
@@ -188,15 +187,15 @@ export class pwafPage {
     };
 
 //Horizontal form
-    async fillHorizontalEmail(page) {
-        await page.locator('#inputEmail3').fill('test@gmail.com');
+    async fillHorizontalEmail(page, user) {
+        await page.locator('#inputEmail3').fill(user.mail);
         await page.locator('#inputEmail3').innerText();
-        await expect(page.locator('#inputEmail3')).toHaveValue('test@gmail.com');
+        await expect(page.locator('#inputEmail3')).toHaveValue(user.mail);
     };
-    async fillHorizontalPassword(page) {
-        await page.locator('#inputPassword3').fill('Qwe12345');
+    async fillHorizontalPassword(page, user) {
+        await page.locator('#inputPassword3').fill(user.password);
         await page.locator('#inputPassword3').innerText();
-        await expect(page.locator('#inputPassword3')).toHaveValue('Qwe12345');
+        await expect(page.locator('#inputPassword3')).toHaveValue(user.password);
     };
     async fillHorizontalCheckbox(page) {
         await page.click('.checkbox .custom-checkbox');
