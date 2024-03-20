@@ -6,7 +6,7 @@ import BuildUser from '../helpers/user_builder';
 test('Inline form', async ({page}) => {
     const blockForm = new PwafPage(page)
     const user = new BuildUser().addFirstName().addEmail().addPassword().addLastName().generate();
-    await page.goto('http://localhost:4200/pages/forms/layouts');
+    await page.goto('/pages/forms/layouts');
     //Fill inline name field
     await blockForm.fillInlineName(page, user);
     //Fill inline email field
@@ -20,7 +20,7 @@ test('Inline form', async ({page}) => {
 test ('Using the Grid', async ({page}) => {
     const blockForm = new PwafPage(page)
     const user = new BuildUser().addFirstName().addEmail().addPassword().addLastName().generate();
-    await page.goto('http://localhost:4200/pages/forms/layouts');
+    await page.goto('/pages/forms/layouts');
     // Fill grid email
     await blockForm.fillGridEmail(user);
     // Fill grid password
@@ -34,7 +34,7 @@ test ('Using the Grid', async ({page}) => {
 test ('Basic form', async ({page}) => {
     const blockForm = new PwafPage(page)
     const user = new BuildUser().addFirstName().addEmail().addPassword().addLastName().generate();
-    await page.goto('http://localhost:4200/pages/forms/layouts');
+    await page.goto('/pages/forms/layouts');
     // Fill basic email
     await blockForm.fillBasicEmail(user);
     // Fill basic password
@@ -48,7 +48,7 @@ test ('Basic form', async ({page}) => {
 test ('Form without labels', async ({page}) => {
     const blockForm = new PwafPage(page)
     const user = new BuildUser().addFirstName().addEmail().addPassword().addLastName().generate();
-    await page.goto('http://localhost:4200/pages/forms/layouts');
+    await page.goto('/pages/forms/layouts');
     // Fill recepient field
     await blockForm.fillRecepientField(page, user);
     // Fill subject field
@@ -62,7 +62,7 @@ test ('Form without labels', async ({page}) => {
 test ('Block form', async ({page} ) => {
     const blockForm = new PwafPage(page)
     const user = new BuildUser().addFirstName().addEmail().addPassword().addLastName().generate();
-    await page.goto('http://localhost:4200/pages/forms/layouts');
+    await page.goto('/pages/forms/layouts');
     // Fill first name
     await blockForm.fillBlockName(page, user);
     // Fill last name
@@ -78,7 +78,7 @@ test ('Block form', async ({page} ) => {
 test('Horizontal form', async ({page}) => {
     const blockForm = new PwafPage(page)
     const user = new BuildUser().addFirstName().addEmail().addPassword().addLastName().generate();
-    await page.goto('http://localhost:4200/pages/forms/layouts');
+    await page.goto('/pages/forms/layouts');
     // Fill email field
     await blockForm.fillHorizontalEmail(page, user);
     //Fill password field

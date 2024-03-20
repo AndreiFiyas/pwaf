@@ -144,9 +144,9 @@ export class PwafPage {
     };
 
     async fillMessageField(page, user) {
-        await page.getByPlaceholder('Message').fill(user.text);
+        await page.getByPlaceholder('Message').fill(user.mail);
         await page.getByPlaceholder('Message').innerText();
-        await expect(page.getByPlaceholder('Message')).toHaveValue(user.text);
+        await expect(page.getByPlaceholder('Message')).toHaveValue(user.mail);
     };
 
     async fillSendPush(page) {
